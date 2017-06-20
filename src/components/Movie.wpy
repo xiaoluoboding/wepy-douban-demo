@@ -1,0 +1,235 @@
+<script>
+import wepy from 'wepy'
+import Config from '../utils/config'
+import apiRequest from '../utils/request'
+import TopNav from './TopNav'
+
+export default class Movie extends wepy.component {
+  config = {
+    'navigationBarTitleText': '院线电影'
+  }
+
+  data = {
+    movieData: {},
+    inTheatersSubjects: {},
+    comingSoonSubjects: {},
+    currentTab: 0
+  }
+
+  computed = {
+    readyData () {
+      return this.currentTab === 0 ? this.inTheatersSubjects : this.comingSoonSubjects
+    },
+    btnClass () {
+      return this.currentTab === 0 ? 'ticket-btn' : 'wish-btn'
+    },
+    btnName () {
+      return this.currentTab === 0 ? '购票' : '想看'
+    }
+  }
+
+  methods = {
+    notify (tab) {
+      const content = tab === 0 ? '您选择了购票，观影愉快！' : '您选择了想看，一起去看吧！'
+      wepy.showModal({
+        title: '提示',
+        content
+      })
+    }
+  }
+
+  loadInTheaters () {
+    apiRequest(Config.inTheatersUrl).then(data => {
+      console.log(data)
+      const { subjects } = data
+      const subArr = []
+      subjects.map((v) => {
+        const subObj = {
+          alt: v.alt,
+          name: v.title,
+          original_name: v.original_title,
+          images: v.images,
+          year: v.year,
+          rating: v.rating,
+          casts: `演员：${v.casts.map((v) => v.name).join('/')}`,
+          genres: `类型：${v.genres.join('/')}`,
+          collect_count: `${v.collect_count}人看过`,
+          directors: `导演：${v.directors[0].name}`
+        }
+        subArr.push(subObj)
+      })
+      this.movieData = data
+      this.inTheatersSubjects = subArr
+      this.$apply()
+    })
+  }
+
+  loadComingSoon () {
+    apiRequest(Config.comingSoonUrl).then(data => {
+      console.log(data)
+      const { subjects } = data
+      const subArr = []
+      subjects.map((v) => {
+        const subObj = {
+          alt: v.alt,
+          name: v.title,
+          original_name: v.original_title,
+          images: v.images,
+          year: v.year,
+          rating: v.rating,
+          casts: `演员：${v.casts.map((v) => v.name).join('/')}`,
+          genres: `类型：${v.genres.join('/')}`,
+          collect_count: `${v.collect_count}人看过`,
+          directors: `导演：${v.directors[0].name}`
+        }
+        subArr.push(subObj)
+      })
+      this.movieData = data
+      this.comingSoonSubjects = subArr
+      this.$apply()
+    })
+  }
+
+  onLoad () {
+    this.loadInTheaters()
+    this.loadComingSoon()
+  }
+
+  components = {
+    TopNav
+  }
+}
+</script>
+
+<template>
+  <TopNav :active.sync="currentTab" />
+  <scroll-view class="movie-scroll" scroll-x="true">
+    <repeat for="{{readyData}}" item="item">
+      <view class="movie-wrapper">
+        <view class="movie-content">
+          <image class="poster" src="{{item.images.large}}" />
+          <view class="movie-summary">
+            <text class="name">{{item.name}}</text>
+            <text class="directors">{{item.directors}}</text>
+            <text class="casts">{{item.casts}}</text>
+            <text class="genres">{{item.genres}}</text>
+            <text class="collect-count">{{item.collect_count}}</text>
+          </view>
+          <text class="{{btnClass}}" @tap="notify({{currentTab}})">{{btnName}}</text>
+        </view>
+      </view>
+    </repeat>
+  </scroll-view>
+</template>
+
+<style type="less">
+.data-title {
+  display: flex;
+  font-size: 36rpx;
+  font-weight: 600;
+  justify-content: center;
+  align-items: center;
+  padding: 20rpx 0;
+}
+.movie-scroll {
+  margin-top: 84rpx;
+  margin-bottom: 100rpx;
+}
+.movie-wrapper {
+  padding: 30rpx;
+  border-bottom: 1px solid #eee;
+  .movie-content {
+    display: flex;
+    flex-direction: row;
+    .poster {
+      width: 160rpx;
+      height: 240rpx;
+    }
+    .movie-summary {
+      display: flex;
+      flex-direction: column;
+      margin-left: 20rpx;
+      margin-right: 20rpx;
+      width: 380rpx;
+      .name {
+        color: #4a4a4a;
+        font-size: 32rpx;
+        font-weight: 600;
+        line-height: 2;
+        word-break: keep-all;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+      .directors {
+        color: #9e9e9e;
+        font-size: 24rpx;
+        font-weight: 500;
+        line-height: 1.6;
+        word-break: keep-all;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+      .casts {
+        color: #9e9e9e;
+        font-size: 24rpx;
+        font-weight: 500;
+        line-height: 1.6;
+        word-break: keep-all;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+      .genres {
+        color: #9e9e9e;
+        font-size: 24rpx;
+        font-weight: 500;
+        line-height: 1.6;
+        word-break: keep-all;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+      .collect-count {
+        color: #3a3a3a;
+        font-size: 24rpx;
+        font-weight: 500;
+        line-height: 2.4;
+        word-break: keep-all;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+    .ticket-btn {
+      color: #42c055;
+      border: #42c055;
+      width: 90rpx;
+      height: 50rpx;
+      font-size: 28rpx;
+      align-self: center;
+      font-weight: 600;
+      line-height: 50rpx;
+      text-align: center;
+      border-radius: 6rpx;
+      border-width: 3rpx;
+      border-style: solid;
+    }
+    .wish-btn {
+      color: #de9703;
+      border: #de9703;
+      width: 90rpx;
+      height: 50rpx;
+      font-size: 28rpx;
+      align-self: center;
+      font-weight: 600;
+      line-height: 50rpx;
+      text-align: center;
+      border-radius: 6rpx;
+      border-width: 3rpx;
+      border-style: solid;
+    }
+  }
+}
+</style>

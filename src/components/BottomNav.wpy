@@ -1,0 +1,73 @@
+<script>
+import wepy from 'wepy'
+
+export default class BottomNav extends wepy.component {
+  props = {
+    active: {
+      twoWay: true
+    }
+  }
+
+  data = {
+  }
+
+  methods = {
+    change (idx, evt) {
+      this.active = +idx
+    }
+  }
+
+  onLoad () {
+  }
+}
+</script>
+
+<template>
+  <view class="tab">
+    <view class="tab_item tab_home{{active == 0 ? ' active' : ''}}" @tap="change(0)">
+      <image class="icon" src="../images/home{{active == 0 ? '_s' : '_n'}}.png"></image>
+      <text class="title">首页</text>
+    </view>
+    <view class="tab_item tab_movie{{active == 1 ? ' active' : ''}}" @tap="change(1)">
+      <image class="icon" src="../images/movie{{active == 1 ? '_s' : '_n'}}.png"></image>
+      <text class="title">电影</text>
+    </view>
+    <view class="tab_item tab_me{{active == 2 ? ' active' : ''}}" @tap="change(2)">
+      <image class="icon" src="../images/me{{active == 2 ? '_s' : '_n'}}.png"></image>
+      <text class="title">我</text>
+    </view>
+  </view>
+</template>
+
+<style type="less">
+.tab {
+  color: #7b7b7b;
+  position: fixed;
+  bottom: 0;
+  height: 100rpx;
+  width: 100%;
+  padding-top: 12rpx;
+  border-top: 1px solid #dad9d6;
+  background-color: #f8f8f8;
+  font-size: 24rpx;
+  .tab_item {
+    &.active {
+      color: #42c055;
+    }
+    display: inline-block;
+    width: 33%;
+    text-align: center;
+    vertical-align: middle;
+  }
+  .icon {
+    width: 48rpx;
+    height: 48rpx;
+    display: block;
+    margin: auto;
+  }
+  .title {
+    padding-top: 6rpx;
+    display: block;
+  }
+}
+</style>

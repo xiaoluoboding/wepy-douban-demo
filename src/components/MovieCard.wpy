@@ -1,0 +1,33 @@
+<script>
+  import wepy from 'wepy'
+
+  export default class MovieCard extends wepy.component {
+    props = {
+      mitem: {
+        type: Object,
+        default: {}
+      }
+    }
+
+    data = {
+      casts: []
+    }
+
+    onLoad () {
+      console.log(this.mitem)
+    }
+  }
+</script>
+<template>
+  <view class="movie-card">
+    <!-- <view class="movie-info">
+      <image class="poster" src="{{item.images.large}}" />
+      <text class="sub-title">{{item.title}}</text>
+      <text class="directors">导演：{{item.directors[0].name}}</text>
+      <text class="directors">演员：{{casts}}</text>
+      <text class="collect-count">{{item.collect_count}} 人看过</text>
+    </view> -->
+  </view>
+</template>
+<style type="less">
+</style>

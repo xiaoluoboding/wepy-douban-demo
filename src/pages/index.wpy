@@ -1,0 +1,68 @@
+<script>
+  import wepy from 'wepy'
+  import BottomNav from '../components/BottomNav'
+  import Home from '../components/Home'
+  import Movie from '../components/Movie'
+  import Me from '../components/Me'
+
+  export default class Index extends wepy.page {
+    config = {
+      'navigationBarTitleText': '豆瓣电影',
+      'navigationBarTextStyle': 'white',
+      'navigationBarBackgroundColor': '#3b3a40'
+    }
+
+    data = {
+      userInfo: {
+        nickName: '加载中...'
+      },
+      currentTab: 0
+    }
+
+    computed = {
+    }
+
+    methods = {}
+
+    events = {
+    }
+
+    onShow() {
+      this.currentTab = 1
+    }
+
+    onLoad() {
+      this.$parent.getUserInfo()
+        .then(d => {
+          this.userInfo = d
+          this.$apply()
+        })
+    }
+
+    components = {
+      BottomNav,
+      Home,
+      Movie,
+      Me
+    }
+  }
+</script>
+<template>
+  <view class="container">
+    <view class="tab_item tab_home" hidden="{{currentTab != 0}}">
+      <component id="Home"></component>
+    </view>
+    <view class="tab_item tab_movie" hidden="{{currentTab != 1}}">
+      <Movie />
+    </view>
+    <view class="tab_item tab_me" hidden="{{currentTab != 2}}">
+      <Me :userInfo.sync="userInfo" />
+    </view>
+    <BottomNav :active.sync="currentTab"></BottomNav>
+  </view>
+</template>
+<style type="less">
+.tab_item {
+  width: 100%;
+}
+</style>

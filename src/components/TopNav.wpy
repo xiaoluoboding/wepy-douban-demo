@@ -1,0 +1,72 @@
+<script>
+import wepy from 'wepy'
+
+export default class TopNav extends wepy.component {
+  props = {
+    active: {
+      twoWay: true
+    }
+  }
+
+  data = {
+  }
+
+  methods = {
+    change (idx, evt) {
+      this.active = +idx
+    }
+  }
+
+  onLoad () {
+  }
+}
+</script>
+
+<template>
+  <view class="nav-tab nav-tab-spacing">
+    <view class="nav-tab-item tab-in-theaters{{active == 0 ? ' active' : ''}}" @tap="change(0)">
+      <text class="title">正在热映</text>
+    </view>
+    <view class="nav-tab-item tab-comming-soon{{active == 1 ? ' active' : ''}}" @tap="change(1)">
+      <text class="title">即将上映</text>
+    </view>
+  </view>
+</template>
+
+<style type="less">
+.nav-tab {
+  position: fixed;
+  display: flex;
+  top: 0;
+  height: 84rpx;
+  width: 100%;
+  color: #000;
+  z-index: 1;
+  border-bottom: 1px solid #dad9d6;
+  background: #fff;
+  .nav-tab-item {
+    &.active {
+      color: #32cd32;
+      border-bottom: 2px solid #32cd32;
+    }
+    color: #9e9e9e;
+    display: inline-block;
+    width: 50%;
+    text-align: center;
+    vertical-align: middle;
+  }
+  .title {
+    flex: 1;
+    font-size: 32rpx;
+    font-weight: 600;
+    height: 84rpx;
+    line-height: 84rpx;
+    text-align: center;
+  }
+}
+.nav-tab-spacing {
+  border-width: 1px 0px 1px 0px;
+  border-style: solid;
+  border-color: #e6e6e6;
+}
+</style>
