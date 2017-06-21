@@ -44,6 +44,11 @@ export default class TopNav extends wepy.component {
   z-index: 1;
   border-bottom: 1px solid #dad9d6;
   background: #fff;
+  &.nav-tab-spacing {
+    border-width: 1px 0px 1px 0px;
+    border-style: solid;
+    border-color: #e6e6e6;
+  }
   .nav-tab-item {
     &.active {
       color: #32cd32;
@@ -63,10 +68,5 @@ export default class TopNav extends wepy.component {
     line-height: 84rpx;
     text-align: center;
   }
-}
-.nav-tab-spacing {
-  border-width: 1px 0px 1px 0px;
-  border-style: solid;
-  border-color: #e6e6e6;
 }
 </style>
