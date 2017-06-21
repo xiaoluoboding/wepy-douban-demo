@@ -5,12 +5,13 @@ import 'wepy-async-function'
 export default class extends wepy.app {
   config = {
     pages: [
+      'pages/welcome',
       'pages/index'
     ],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
-      navigationBarTitleText: 'WeChat',
+      navigationBarTitleText: '豆瓣电影',
       navigationBarTextStyle: 'black'
     }
   }
@@ -41,12 +42,18 @@ export default class extends wepy.app {
 </script>
 
 <style type="less">
-.container {
+page {
   height: 100%;
+  background: #f8f8f8;
+  font-family: -apple-system-font, Arial, Helvetica, sans-serif;
+  font-size: 32rpx;
+  line-height: 1.42857;
+}
+
+.container {
+  width: 100%;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
 }
 </style>

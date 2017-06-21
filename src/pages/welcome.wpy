@@ -1,0 +1,91 @@
+<script>
+  import wepy from 'wepy'
+
+  export default class Welcome extends wepy.page {
+    config = {
+      'navigationBarTitleText': '豆瓣电影',
+      'navigationBarTextStyle': 'white',
+      'navigationBarBackgroundColor': '#3b3a40'
+    }
+
+    data = {
+      userInfo: {
+        nickName: '加载中...'
+      },
+      motto: '开始体验'
+    }
+
+    computed = {
+    }
+
+    methods = {
+      bindViewTap () {
+        wepy.redirectTo({
+          url: '/pages/index'
+        })
+      }
+    }
+
+    events = {
+    }
+
+    onShow() {
+    }
+
+    onLoad() {
+      this.$parent.getUserInfo()
+        .then(d => {
+          this.userInfo = d
+          this.$apply()
+        })
+    }
+
+    components = {
+    }
+  }
+</script>
+<template>
+  <view class="container">
+    <view class="userinfo">
+      <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+    </view>
+    <view @tap="bindViewTap" class="usermotto">
+      <text class="user-motto">{{motto}}</text>
+    </view>
+  </view>
+</template>
+<style type="less">
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 200rpx 0;
+  box-sizing: border-box;
+}
+
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .userinfo-avatar {
+    width: 128rpx;
+    height: 128rpx;
+    margin: 20rpx;
+    border-radius: 50%;
+  }
+
+  .userinfo-nickname {
+    color: #9e9e9e;
+  }
+}
+
+.usermotto {
+  color: #9e9e9e;
+  padding: 8rpx 12rpx;
+  border: 1px solid #6e6e6e;
+  border-radius: 4rpx;
+}
+</style>

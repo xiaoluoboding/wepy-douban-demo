@@ -11,7 +11,7 @@ const apiRequest = async (url, method = 'GET', data = {}) => {
   }
   
   wepy.showToast({
-    title: '正在载入...',
+    title: '加载中...',
     icon: 'loading',
     duration: 10000,
     mask: true
